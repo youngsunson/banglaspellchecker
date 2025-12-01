@@ -2,7 +2,7 @@
 node_modules/
 
 # Build output
-# dist/  # Uncomment this if using gh-pages branch deployment
+dist/
 
 # Environment variables
 .env.local
