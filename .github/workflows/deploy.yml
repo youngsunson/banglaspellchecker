@@ -1,9 +1,11 @@
-# File: .github/workflows/deploy.yml
 name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main]  # শুধু main branch-এ পুশ হলে চলবে
+
+  # ঐচ্ছিক: ম্যানুয়ালি রান করার অপশন
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -11,30 +13,34 @@ permissions:
   id-token: write
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: 🛠️ Build project
         run: npm run build
+        env:
+          # যদি .env ফাইলে secret থাকে (যেমন: ডেভেলপমেন্ট API key), তবে এখানে সেট করুন
+          # কিন্তু আপনার ক্ষেত্রে ইউজার নিজের API key দেয়, তাই প্রয়োজন নেই
+          # GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: 📤 Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: ./dist
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          # manifest.xml কেও deploy করুন
+          extra_files: |
+            manifest.xml
