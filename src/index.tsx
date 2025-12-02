@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
@@ -146,7 +146,8 @@ function App() {
   const clearHighlights = async () => {
     await Word.run(async (context) => {
       const body = context.document.body;
-      body.font.highlightColor = null;
+      // FIX: Changed null to 'None' because highlightColor expects a string
+      body.font.highlightColor = 'None';
       await context.sync();
     }).catch((error) => {
       console.error('Error clearing highlights:', error);
@@ -263,7 +264,8 @@ Response format (শুধুমাত্র valid JSON object return করু�
         const analysisData = JSON.parse(jsonMatch[0]);
         
         const spellingErrors = analysisData.spellingErrors || [];
-        spellingErrors.forEach((error: SpellingError, index: number) => {
+        // FIX: Removed unused 'index' parameter
+        spellingErrors.forEach((error: SpellingError) => {
           if (error.position === undefined) {
             error.position = text.indexOf(error.wrong);
           }
