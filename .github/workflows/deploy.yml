@@ -17,22 +17,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: 'npm'
-
         - name: Clear npm cache
           run: npm cache clean --force
-
       - name: Install dependencies
         run: npm ci
-
       - name: Build
         run: npm run build
-
       # ✅ Option A: If you moved `assets` into `public/` → skip this step
       # ✅ Option B: If assets are still in root → uncomment below:
       # - name: Copy manifest.xml and assets to dist
