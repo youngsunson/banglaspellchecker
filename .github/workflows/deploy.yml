@@ -1,3 +1,4 @@
+
 name: Deploy to GitHub Pages
 
 on:
@@ -11,6 +12,8 @@ permissions:
   id-token: write
 
 jobs:
+- name: Clear npm cache
+  run: npm cache clean --force
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
