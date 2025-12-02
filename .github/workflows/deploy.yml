@@ -12,8 +12,6 @@ permissions:
   id-token: write
 
 jobs:
-- name: Clear npm cache
-  run: npm cache clean --force
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
@@ -25,6 +23,9 @@ jobs:
         with:
           node-version: "20"
           cache: 'npm'
+
+        - name: Clear npm cache
+          run: npm cache clean --force
 
       - name: Install dependencies
         run: npm ci
