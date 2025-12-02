@@ -146,7 +146,7 @@ function App() {
   const clearHighlights = async () => {
     await Word.run(async (context) => {
       const body = context.document.body;
-      // FIXED: Changed null to 'None' as required by Word JS API type definition
+      // FIXED: highlightColor must be a string 'None' to clear, not null
       body.font.highlightColor = 'None';
       await context.sync();
     }).catch((error) => {
@@ -265,7 +265,7 @@ Response format (শুধুমাত্র valid JSON object return করু�
         
         const spellingErrors = analysisData.spellingErrors || [];
         
-        // FIXED: Removed unused 'index' parameter
+        // FIXED: Removed unused 'index' parameter from forEach
         spellingErrors.forEach((error: SpellingError) => {
           if (error.position === undefined) {
             error.position = text.indexOf(error.wrong);
